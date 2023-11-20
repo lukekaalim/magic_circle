@@ -1,0 +1,24 @@
+load("@build_bazel_rules_android//android:rules.bzl", "android_binary", "android_library")
+
+android_library(
+    name = "lib",
+    srcs = ["java/com/example/android/bazel/MainActivity.java"],
+    custom_package = "com.example.android.bazel",
+    manifest = "LibraryManifest.xml",
+    resource_files = glob(["res/**/*"]),
+    assets = glob(["assets/**/*"]),
+    assets_dir = "assets",
+    deps = [
+        "//quickjs-jvm:quickjs-jvm",
+        "//quickjs-jvm:jni",
+        "@maven//:androidx_appcompat_appcompat",
+        "@maven//:androidx_constraintlayout_constraintlayout",
+    ],
+)
+
+android_binary(
+    name = "app",
+    manifest = "AndroidManifest.xml",
+    manifest_values = {"applicationId": "com.example.android.bazel"},
+    deps = [":lib"],
+)
